@@ -11,6 +11,9 @@ import { SaleModule } from './sale/sale.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import configuration from '../config/configuration';
+import { Item } from './item/entities/item.entity';
+import { Sale } from './sale/entities/sale.entity';
+import { Store } from './store/entities/store.entity';
 
 let modelModules = [StoreModule, ItemModule, SaleModule];
 
@@ -25,8 +28,8 @@ let typeOrmConfig = TypeOrmModule.forRoot({
   port: 3306,
   username: process.env.DATABASE_USER,
   password: '',
-  entities: [],
-  synchronize: true,
+  entities: [Item, Sale, Store],
+  // synchronize: true,
 })
 
 
