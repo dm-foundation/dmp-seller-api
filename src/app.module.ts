@@ -3,22 +3,40 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import { StoreModule } from './store/store.module';
 import { ItemModule } from './item/item.module';
 import { SaleModule } from './sale/sale.module';
 
-import configuration from '../config/configuration';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
+import configuration from '../config/configuration';
 
 let modelModules = [StoreModule, ItemModule, SaleModule];
 
+let configModuleConfig = ConfigModule.forRoot({
+  load: [configuration],
+  envFilePath: ['.env.development.local', '.env.development'],
+})
+
+let typeOrmConfig = TypeOrmModule.forRoot({
+  type: 'mysql',
+  host: process.env.DATABASE_HOST,
+  port: 3306,
+  username: process.env.DATABASE_USER,
+  password: '',
+  entities: [],
+  synchronize: true,
+})
+
+
 @Module({
   imports:
-    [ConfigModule.forRoot({
-      load: [configuration],
-      envFilePath: ['.env.development.local', '.env.development'],
-    }),
-    ...modelModules],
+    [
+      typeOrmConfig,
+      configModuleConfig,
+      ...modelModules
+    ],
   controllers: [AppController],
   providers: [AppService],
 })
