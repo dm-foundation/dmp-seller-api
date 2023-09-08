@@ -6,23 +6,22 @@ import { Store } from './entities/store.entity';
 
 @Injectable()
 export class StoreService {
-
   constructor(
     @Inject('STORE_REPOSITORY')
     private storeRepository: Repository<Store>,
-  ) { }
+  ) {}
 
   create(createStoreDto: CreateStoreDto): Promise<Store> {
-    const createdStore = this.storeRepository.save(createStoreDto)
+    const createdStore = this.storeRepository.save(createStoreDto);
     return createdStore;
   }
-  
+
   findAll(): Promise<Store[]> {
     return this.storeRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} store`;
+    return this.storeRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateStoreDto: UpdateStoreDto) {
