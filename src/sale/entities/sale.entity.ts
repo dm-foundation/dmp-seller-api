@@ -24,9 +24,6 @@ export class Sale {
   id: number;
 
   @Column()
-  customer_name: string;
-
-  @Column()
   customer_email: string;
 
   @Column({
