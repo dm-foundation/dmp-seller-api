@@ -12,10 +12,11 @@ export class StoreService {
     private storeRepository: Repository<Store>,
   ) { }
 
-  create(createStoreDto: CreateStoreDto) {
-    return 'This action adds a new store';
+  create(createStoreDto: CreateStoreDto): Promise<Store> {
+    const createdStore = this.storeRepository.save(createStoreDto)
+    return createdStore;
   }
-
+  
   findAll(): Promise<Store[]> {
     return this.storeRepository.find();
   }
