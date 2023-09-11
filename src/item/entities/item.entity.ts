@@ -26,7 +26,10 @@ export class Item {
   @Column()
   units: number;
 
-  @ManyToOne(() => Store)
+  @Column()
+  id_store: number;
+
+  @ManyToOne(() => Store, (store) => store.items)
   @JoinColumn({ name: 'id_store' })
   store: Store;
 

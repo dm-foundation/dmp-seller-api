@@ -12,9 +12,9 @@ export class ItemController {
     return this.itemService.create(createItemDto);
   }
 
-  @Get()
-  findAll() {
-    return this.itemService.findAll();
+  @Get('store/:id_store')
+  findAllByStoreId(@Param('id_store') id_store: number) {
+    return this.itemService.findAllByStoreId(id_store);
   }
 
   @Get(':id')

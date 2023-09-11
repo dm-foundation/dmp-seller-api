@@ -1,7 +1,10 @@
+import { Item } from 'src/item/entities/item.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -16,6 +19,10 @@ export class Store {
 
   @Column()
   email: string;
+
+  @OneToMany(() => Item, (item) => item.store, { cascade: true })
+  @JoinColumn()
+  items: Item[];
 
   @CreateDateColumn()
   create_at: Date;

@@ -25,7 +25,8 @@ export class StoreService {
   }
 
   update(id: number, updateStoreDto: UpdateStoreDto) {
-    return `This action updates a #${id} store`;
+    const updatedStore = this.storeRepository.update(id, updateStoreDto);
+    return `Store #${id} updated successfully`;
   }
 
   remove(id: number) {
