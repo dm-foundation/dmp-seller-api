@@ -17,9 +17,6 @@ export class Store {
   @Column()
   email: string;
 
-  @Column()
-  eth_address: string;
-
   @CreateDateColumn()
   create_at: Date;
 
