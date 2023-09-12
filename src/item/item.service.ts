@@ -24,7 +24,8 @@ export class ItemService {
   }
 
   update(id: number, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+    const updatedStore = this.itemRepository.update(id, updateItemDto);
+    return `Item #${id} updated successfully`;
   }
 
   remove(id: number) {

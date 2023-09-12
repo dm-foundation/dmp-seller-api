@@ -12,19 +12,19 @@ export class WalletAddressController {
     return this.walletAddressService.create(createWalletAddressDto);
   }
 
-  @Get()
-  findAll() {
-    return this.walletAddressService.findAll();
+  @Get('/store/:id_store')
+  findAllByStoreId(@Param('id_store') id_store: number) {
+    return this.walletAddressService.findAllByStoreId(id_store);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.walletAddressService.findOne(+id);
+  @Get(':eth_address')
+  findOne(@Param('eth_address') eth_address: string) {
+    return this.walletAddressService.findOneByEthAddress(eth_address);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWalletAddressDto: UpdateWalletAddressDto) {
-    return this.walletAddressService.update(+id, updateWalletAddressDto);
+  @Patch(':eth_address')
+  update(@Param('eth_address') eth_address: string, @Body() updateWalletAddressDto: UpdateWalletAddressDto) {
+    return this.walletAddressService.update(+eth_address, updateWalletAddressDto);
   }
 
   @Delete(':id')
