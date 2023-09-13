@@ -12,11 +12,6 @@ export class WalletAddressController {
     return this.walletAddressService.create(createWalletAddressDto);
   }
 
-  @Get('/store/:id_store')
-  findAllByStoreId(@Param('id_store') id_store: number) {
-    return this.walletAddressService.findAllByStoreId(id_store);
-  }
-
   @Get(':eth_address')
   findOne(@Param('eth_address') eth_address: string) {
     return this.walletAddressService.findOneByEthAddress(eth_address);
@@ -27,8 +22,8 @@ export class WalletAddressController {
     return this.walletAddressService.update(+eth_address, updateWalletAddressDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.walletAddressService.remove(+id);
+  @Delete(':eth_address')
+  remove(@Param('eth_address') eth_address: string) {
+    return this.walletAddressService.remove(eth_address);
   }
 }

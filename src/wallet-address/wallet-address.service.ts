@@ -17,10 +17,6 @@ export class WalletAddressService {
     return createdWalletSore;
   }
 
-  findAllByStoreId(id_store: number) {
-    return this.walletStoreRepository.find({ where: { id_store } });
-  }
-
   findOneByEthAddress(eth_address: string) {
     return this.walletStoreRepository.findOne({ where: { eth_address } });
   }
@@ -33,7 +29,8 @@ export class WalletAddressService {
     return `WalletAddress #${eth_address} updated successfully`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} walletAddress`;
+  remove(eth_address: string) {
+    this.walletStoreRepository.delete({ eth_address });
+    return `WalletAddress #${eth_address} deleted successfully`;
   }
 }

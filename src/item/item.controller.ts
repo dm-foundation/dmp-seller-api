@@ -1,20 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
 import { ItemService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from '../../config/multer.config';
 
 @Controller('item')
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
   @Post()
-  create(@Body() createItemDto: CreateItemDto) {
-    return this.itemService.create(createItemDto);
-  }
+  @UseInterceptors(FileInterceptor('thumbnail', multerConfig))
+  create(
+    @Body() createItemDto: CreateItemDto,
+    @UploadedFile() thumbnail: Express.Multer.File,
+  ) {
+    if (!thumbnail) {
+      throw new BadRequestException(
+        'Thumbnail must be provided or file extension is invalid.',
+      );
+    }
 
-  @Get('store/:id_store')
-  findAllByStoreId(@Param('id_store') id_store: number) {
-    return this.itemService.findAllByStoreId(id_store);
+    createItemDto.thumbnail = thumbnail.path.toString();
+
+    return this.itemService.create(createItemDto);
   }
 
   @Get(':id')

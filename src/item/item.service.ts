@@ -15,20 +15,17 @@ export class ItemService {
     return createdItem;
   }
 
-  findAllByStoreId(id_store:number) {
-    return this.itemRepository.find({where:{id_store}});
-  }
-
   findOne(id: number) {
-    return `This action returns a #${id} item`;
+    return this.itemRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateItemDto: UpdateItemDto) {
-    const updatedStore = this.itemRepository.update(id, updateItemDto);
+    this.itemRepository.update(id, updateItemDto);
     return `Item #${id} updated successfully`;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} item`;
+    this.itemRepository.delete({id})
+    return `Item #${id} deleted successfully`;
   }
 }

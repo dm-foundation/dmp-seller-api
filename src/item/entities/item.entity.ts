@@ -29,6 +29,9 @@ export class Item {
   @Column()
   id_store: number;
 
+  @Column()
+  thumbnail: string;
+
   @ManyToOne(() => Store, (store) => store.items)
   @JoinColumn({ name: 'id_store' })
   store: Store;

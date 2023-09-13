@@ -17,6 +17,16 @@ export class StoreController {
     return this.storeService.findAll();
   }
 
+  @Get('/:id_store/items')
+  findAllItemsFromStore(@Param('id_store') id_store: number) {
+    return this.storeService.findAllItemsFromStore(id_store);
+  }
+
+  @Get('/:id_store/wallet-addresses')
+  findAllWalletAdressesFromStore(@Param('id_store') id_store: number) {
+    return this.storeService.findAllWalletAdressesFromStore(id_store);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.storeService.findOne(+id);

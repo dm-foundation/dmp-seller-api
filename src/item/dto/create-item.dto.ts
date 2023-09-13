@@ -3,4 +3,5 @@ export class CreateItemDto {
     sku: string;
     price: number;
     units: number;
+    thumbnail: string;
 }

@@ -20,6 +20,9 @@ export class Store {
   @Column()
   email: string;
 
+  @Column({default: true})
+  active: boolean;
+
   @OneToMany(() => Item, (item) => item.store, { cascade: true })
   @JoinColumn()
   items: Item[];
