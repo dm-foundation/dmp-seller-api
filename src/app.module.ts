@@ -14,9 +14,15 @@ import configuration from '../config/configuration';
 import { Item } from './item/entities/item.entity';
 import { Sale } from './sale/entities/sale.entity';
 import { Store } from './store/entities/store.entity';
+import { WalletAddress } from './wallet-address/entities/wallet-address.entity';
 import { WalletAddressModule } from './wallet-address/wallet-address.module';
 
-let modelModules = [StoreModule, ItemModule, SaleModule];
+let modelModules = [
+  StoreModule,
+  ItemModule,
+  SaleModule,
+  WalletAddressModule
+];
 
 let configModuleConfig = ConfigModule.forRoot({
   load: [configuration],
@@ -30,7 +36,7 @@ let typeOrmConfig = TypeOrmModule.forRoot({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DB,
-  entities: [Item, Sale, Store],
+  entities: [Item, Sale, Store, WalletAddress],
   synchronize: true,
   autoLoadEntities: true,
 })
@@ -42,7 +48,6 @@ let typeOrmConfig = TypeOrmModule.forRoot({
       typeOrmConfig,
       configModuleConfig,
       ...modelModules,
-      WalletAddressModule
     ],
   controllers: [AppController],
   providers: [AppService],

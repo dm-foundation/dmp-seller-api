@@ -5,7 +5,7 @@ import { UpdateStoreDto } from './dto/update-store.dto';
 
 @Controller('store')
 export class StoreController {
-  constructor(private readonly storeService: StoreService) {}
+  constructor(private readonly storeService: StoreService) { }
 
   @Post()
   create(@Body() createStoreDto: CreateStoreDto) {
@@ -17,14 +17,14 @@ export class StoreController {
     return this.storeService.findAll();
   }
 
-  @Get('/:id_store/items')
-  findAllItemsFromStore(@Param('id_store') id_store: number) {
-    return this.storeService.findAllItemsFromStore(id_store);
+  @Get('/:storeId/items')
+  findAllItemsFromStore(@Param('storeId') storeId: number) {
+    return this.storeService.findAllItemsFromStore(storeId);
   }
 
-  @Get('/:id_store/wallet-addresses')
-  findAllWalletAdressesFromStore(@Param('id_store') id_store: number) {
-    return this.storeService.findAllWalletAdressesFromStore(id_store);
+  @Get('/:storeId/wallet-addresses')
+  findAllWalletAdressesFromStore(@Param('storeId') storeId: number) {
+    return this.storeService.findAllWalletAdressesFromStore(storeId);
   }
 
   @Get(':id')

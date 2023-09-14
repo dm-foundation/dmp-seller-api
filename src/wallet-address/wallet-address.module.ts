@@ -9,4 +9,4 @@ import { DatabaseModule } from 'src/database/database.module';
   controllers: [WalletAddressController],
   providers: [...walletAddressProviders, WalletAddressService],
 })
-export class WalletAddressModule {}
+export class WalletAddressModule { }

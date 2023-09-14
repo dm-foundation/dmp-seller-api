@@ -1,4 +1,4 @@
 export class CreateWalletAddressDto {
-  eth_address: string;
-  id_store: number;
+  ethAddress: string;
+  storeId: number;
 }

@@ -1,6 +1,6 @@
 import { Store } from 'src/store/entities/store.entity';
 import {
-    Column,
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -8,17 +8,16 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-@Entity('wallets_addresses')
+@Entity('walletAddresses')
 export class WalletAddress {
   @PrimaryColumn({ unique: true })
-  eth_address: string;
+  ethAddress: string;
+
+  @ManyToOne(() => Store, (store) => store.walletAddresses)
+  store: Store;
 
   @Column()
-  id_store: number
-
-  @ManyToOne(() => Store)
-  @JoinColumn({ name: 'id_store' })
-  store: Store;
+  storeId: number;
 
   @CreateDateColumn()
   created_at: Date;

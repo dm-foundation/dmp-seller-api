@@ -33,12 +33,10 @@ export class Sale {
   })
   stauts: Status;
 
-  @ManyToOne(() => Store)
-  @JoinColumn({ name: 'id_store' })
+  @ManyToOne(() => Store, (store) => store.sales)
   store: Store;
 
   @OneToMany(() => Item, (item) => item.id)
-  @JoinColumn({ name: 'id_item' })
   items: Item[];
 
   @CreateDateColumn()

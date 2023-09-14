@@ -1,9 +1,10 @@
 import { Item } from 'src/item/entities/item.entity';
+import { Sale } from 'src/sale/entities/sale.entity';
+import { WalletAddress } from 'src/wallet-address/entities/wallet-address.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,12 +21,17 @@ export class Store {
   @Column()
   email: string;
 
-  @Column({default: true})
+  @Column({ default: true })
   active: boolean;
 
   @OneToMany(() => Item, (item) => item.store, { cascade: true })
-  @JoinColumn()
   items: Item[];
+
+  @OneToMany(() => WalletAddress, (walletAddress) => walletAddress.store)
+  walletAddresses: WalletAddress[];
+
+  @OneToMany(() => Sale, (sale) => sale.store)
+  sales: Sale[];
 
   @CreateDateColumn()
   create_at: Date;

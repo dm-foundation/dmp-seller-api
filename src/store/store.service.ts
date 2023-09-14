@@ -17,7 +17,7 @@ export class StoreService {
 
     @Inject('WALLET_ADDRESS_REPOSITORY')
     private walletAddressRepository: Repository<WalletAddress>,
-  ) {}
+  ) { }
 
   create(createStoreDto: CreateStoreDto): Promise<Store> {
     const createdStore = this.storeRepository.save(createStoreDto);
@@ -28,12 +28,22 @@ export class StoreService {
     return this.storeRepository.find({ where: { active: true } });
   }
 
-  findAllItemsFromStore(id_store: number): Promise<Item[]> {
-    return this.itemRepository.find({where: {id_store}});
+  findAllItemsFromStore(storeId: number): Promise<Item[]> {
+    return this.itemRepository.find({
+      relations: { store: true },
+      where: {
+        store: { id: storeId }
+      }
+    });
   }
 
-  findAllWalletAdressesFromStore(id_store: number): Promise<WalletAddress[]> {
-    return this.walletAddressRepository.find({where: {id_store}});
+  findAllWalletAdressesFromStore(storeId: number): Promise<WalletAddress[]> {
+    return this.walletAddressRepository.find({
+      relations: { store: true },
+      where: {
+        store: { id: storeId }
+      }
+    });
   }
 
   findOne(id: number) {
@@ -47,7 +57,7 @@ export class StoreService {
 
   async toggleActivation(id: number) {
     const store = await this.storeRepository.findOne({ where: { id } });
-    if(store.active === true){
+    if (store.active === true) {
       await this.storeRepository.update(id, { active: false });
       return `Store #${id} deactivated successfully`;
     }

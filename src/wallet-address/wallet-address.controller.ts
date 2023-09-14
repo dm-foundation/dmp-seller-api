@@ -5,25 +5,25 @@ import { UpdateWalletAddressDto } from './dto/update-wallet-address.dto';
 
 @Controller('wallet-address')
 export class WalletAddressController {
-  constructor(private readonly walletAddressService: WalletAddressService) {}
+  constructor(private readonly walletAddressService: WalletAddressService) { }
 
   @Post()
   create(@Body() createWalletAddressDto: CreateWalletAddressDto) {
     return this.walletAddressService.create(createWalletAddressDto);
   }
 
-  @Get(':eth_address')
-  findOne(@Param('eth_address') eth_address: string) {
-    return this.walletAddressService.findOneByEthAddress(eth_address);
+  @Get(':ethAddress')
+  findOne(@Param('ethAddress') ethAddress: string) {
+    return this.walletAddressService.findOneByEthAddress(ethAddress);
   }
 
-  @Patch(':eth_address')
-  update(@Param('eth_address') eth_address: string, @Body() updateWalletAddressDto: UpdateWalletAddressDto) {
-    return this.walletAddressService.update(+eth_address, updateWalletAddressDto);
+  @Patch(':ethAddress')
+  update(@Param('ethAddress') ethAddress: string, @Body() updateWalletAddressDto: UpdateWalletAddressDto) {
+    return this.walletAddressService.update(+ethAddress, updateWalletAddressDto);
   }
 
-  @Delete(':eth_address')
-  remove(@Param('eth_address') eth_address: string) {
-    return this.walletAddressService.remove(eth_address);
+  @Delete(':ethAddress')
+  remove(@Param('ethAddress') ethAddress: string) {
+    return this.walletAddressService.remove(ethAddress);
   }
 }

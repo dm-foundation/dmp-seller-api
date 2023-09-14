@@ -8,29 +8,29 @@ import { WalletAddress } from './entities/wallet-address.entity';
 export class WalletAddressService {
   constructor(
     @Inject('WALLET_ADDRESS_REPOSITORY')
-    private walletStoreRepository: Repository<WalletAddress>,
-  ) {}
+    private walletAddressRepository: Repository<WalletAddress>,
+  ) { }
   create(createWalletAddressDto: CreateWalletAddressDto) {
-    const createdWalletSore = this.walletStoreRepository.save(
+    const createdWalletSore = this.walletAddressRepository.save(
       createWalletAddressDto,
     );
     return createdWalletSore;
   }
 
-  findOneByEthAddress(eth_address: string) {
-    return this.walletStoreRepository.findOne({ where: { eth_address } });
+  findOneByEthAddress(ethAddress: string) {
+    return this.walletAddressRepository.findOne({ where: { ethAddress } });
   }
 
-  update(eth_address: number, updateWalletAddressDto: UpdateWalletAddressDto) {
-    this.walletStoreRepository.update(
-      eth_address,
+  update(ethAddress: number, updateWalletAddressDto: UpdateWalletAddressDto) {
+    this.walletAddressRepository.update(
+      ethAddress,
       updateWalletAddressDto,
     );
-    return `WalletAddress #${eth_address} updated successfully`;
+    return `WalletAddress #${ethAddress} updated successfully`;
   }
 
-  remove(eth_address: string) {
-    this.walletStoreRepository.delete({ eth_address });
-    return `WalletAddress #${eth_address} deleted successfully`;
+  remove(ethAddress: string) {
+    this.walletAddressRepository.delete({ ethAddress });
+    return `WalletAddress #${ethAddress} deleted successfully`;
   }
 }
