@@ -38,7 +38,7 @@ export class StoreController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.storeService.remove(+id);
+  toggleActivation(@Param('id') id: string) {
+    return this.storeService.toggleActivation(+id);
   }
 }

@@ -25,7 +25,7 @@ export class StoreService {
   }
 
   findAll(): Promise<Store[]> {
-    return this.storeRepository.find();
+    return this.storeRepository.find({ where: { active: true } });
   }
 
   findAllItemsFromStore(id_store: number): Promise<Item[]> {
@@ -37,7 +37,7 @@ export class StoreService {
   }
 
   findOne(id: number) {
-    return this.storeRepository.findOne({ where: { id } });
+    return this.storeRepository.findOne({ where: { id, active: true } });
   }
 
   update(id: number, updateStoreDto: UpdateStoreDto) {
@@ -45,7 +45,7 @@ export class StoreService {
     return `Store #${id} updated successfully`;
   }
 
-  async remove(id: number) {
+  async toggleActivation(id: number) {
     const store = await this.storeRepository.findOne({ where: { id } });
     if(store.active === true){
       await this.storeRepository.update(id, { active: false });
