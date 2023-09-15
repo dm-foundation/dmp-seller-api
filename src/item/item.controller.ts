@@ -22,7 +22,7 @@ export class ItemController {
 
   @Post()
   @UseInterceptors(FileInterceptor('thumbnail', multerConfig))
-  create(
+  async create(
     @Body() createItemDto: CreateItemDto,
     @UploadedFile() thumbnail: Express.Multer.File,
   ) {
@@ -34,12 +34,12 @@ export class ItemController {
 
     createItemDto.thumbnail = thumbnail.path.toString();
 
-    return this.itemService.create(createItemDto);
+    return await this.itemService.create(createItemDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.itemService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.itemService.findOne(+id);
   }
 
   @Patch(':id')

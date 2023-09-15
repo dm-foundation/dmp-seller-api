@@ -13,8 +13,8 @@ export class WalletAddressController {
   }
 
   @Get(':ethAddress')
-  findOne(@Param('ethAddress') ethAddress: string) {
-    return this.walletAddressService.findOneByEthAddress(ethAddress);
+  async findOne(@Param('ethAddress') ethAddress: string) {
+    return await this.walletAddressService.findOneByEthAddress(ethAddress);
   }
 
   @Patch(':ethAddress')

@@ -13,23 +13,23 @@ export class StoreController {
   }
 
   @Get()
-  findAll() {
-    return this.storeService.findAll();
+  async findAll() {
+    return await this.storeService.findAll();
   }
 
   @Get('/:storeId/items')
-  findAllItemsFromStore(@Param('storeId') storeId: number) {
-    return this.storeService.findAllItemsFromStore(storeId);
+  async findAllItemsFromStore(@Param('storeId') storeId: number) {
+    return await this.storeService.findAllItemsFromStore(storeId);
   }
 
   @Get('/:storeId/wallet-addresses')
-  findAllWalletAdressesFromStore(@Param('storeId') storeId: number) {
-    return this.storeService.findAllWalletAdressesFromStore(storeId);
+  async findAllWalletAdressesFromStore(@Param('storeId') storeId: number) {
+    return await this.storeService.findAllWalletAdressesFromStore(storeId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.storeService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.storeService.findOne(+id);
   }
 
   @Patch(':id')
@@ -38,7 +38,7 @@ export class StoreController {
   }
 
   @Delete(':id')
-  toggleActivation(@Param('id') id: string) {
-    return this.storeService.toggleActivation(+id);
+  async toggleActivation(@Param('id') id: string) {
+    return await this.storeService.toggleActivation(+id);
   }
 }
