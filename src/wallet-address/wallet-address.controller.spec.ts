@@ -8,7 +8,10 @@ describe('WalletAddressController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [WalletAddressController],
-      providers: [WalletAddressService],
+      providers: [{
+        provide: WalletAddressService,
+        useValue: {}
+      }],
     }).compile();
 
     controller = module.get<WalletAddressController>(WalletAddressController);
