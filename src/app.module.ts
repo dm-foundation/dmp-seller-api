@@ -26,7 +26,7 @@ let modelModules = [
 
 let configModuleConfig = ConfigModule.forRoot({
   load: [configuration],
-  envFilePath: ['.env.development.local', '.env.development'],
+  envFilePath: `.env.${process.env.NODE_ENV}`,
 })
 
 let typeOrmConfig = TypeOrmModule.forRoot({
@@ -40,7 +40,6 @@ let typeOrmConfig = TypeOrmModule.forRoot({
   synchronize: true,
   autoLoadEntities: true,
 })
-
 
 @Module({
   imports:

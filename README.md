@@ -2,38 +2,38 @@
 
 ## Description
 
-Created with Nest.js new cli command.
+Created with Nest.js new cli command. Before installing, ensure you have a copy the content of `.env.example` to `.env.development` and `.env.development` for both development and production configurations.
 
 ## Installation
 
 ```bash
-$ yarn 
+$ yarn
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ yarn run start
+$ yarn dev
 
-# watch mode
-$ yarn run start:dev
+# debug
+$ yarn debug
 
 # production mode
-$ yarn run start:prod
+$ yarn prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn test
 
 # e2e tests
-$ yarn run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ yarn run test:cov
+$ yarn test:cov
 ```
 
 ## License
