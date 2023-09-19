@@ -4,4 +4,5 @@ export class CreateItemDto {
     price: number;
     units: number;
     thumbnail: string;
+    storeId: number;
 }
