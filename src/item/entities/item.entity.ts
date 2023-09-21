@@ -29,7 +29,11 @@ export class Item {
   @Column()
   thumbnail: string;
 
+  @Column({nullable: false})
+  storeId: number;
+
   @ManyToOne(() => Store, (store) => store.items)
+  @JoinColumn({name: 'storeId'})
   store: Store;
 
   @CreateDateColumn()
