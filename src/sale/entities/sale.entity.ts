@@ -31,13 +31,28 @@ export class Sale {
     enum: Status,
     default: Status.PENDING,
   })
-  stauts: Status;
+  status: Status;
 
   @ManyToOne(() => Store, (store) => store.sales)
   store: Store;
 
   @OneToMany(() => Item, (item) => item.id)
   items: Item[];
+
+  @Column()
+  amountInUSD: number
+
+  @Column()
+  amountInEth: number
+
+  @Column()
+  amountInWei: number
+
+  @Column()
+  contractPaymentAddress: string
+
+  @Column()
+  hashedCart: string
 
   @CreateDateColumn()
   created_at: Date;
