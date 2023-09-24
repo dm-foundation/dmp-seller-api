@@ -16,6 +16,7 @@ import { Sale } from './sale/entities/sale.entity';
 import { Store } from './store/entities/store.entity';
 import { WalletAddress } from './wallet-address/entities/wallet-address.entity';
 import { WalletAddressModule } from './wallet-address/wallet-address.module';
+import { HealthModule } from './health/health.module';
 
 let modelModules = [
   StoreModule,
@@ -46,6 +47,7 @@ let typeOrmConfig = TypeOrmModule.forRoot({
     [
       typeOrmConfig,
       configModuleConfig,
+      HealthModule,
       ...modelModules,
     ],
   controllers: [AppController],
