@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Res } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
+import * as fs from 'fs';
+import { Response } from 'express';
 
 @Controller('store')
 export class StoreController {
@@ -18,8 +20,22 @@ export class StoreController {
   }
 
   @Get('/:storeId/items')
-  async findAllItemsFromStore(@Param('storeId') storeId: number) {
-    return await this.storeService.findAllItemsFromStore(storeId);
+  async findAllItemsFromStore(@Param('storeId') storeId: number, @Res() res: Response) {
+    const items = await this.storeService.findAllItemsFromStore(storeId);
+
+    if (!items || items.length === 0) {
+      throw new NotFoundException('No items found for this store');
+    }
+
+    const itemsWithBase64Images = await Promise.all(
+      items.map(async (item) => {
+        const imageBuffer = fs.readFileSync(item.thumbnail);
+        const base64Image = imageBuffer.toString('base64');
+        return { ...item, thumbnail: "data:image/jpeg;base64," + base64Image };
+      }),
+    );
+
+    return res.status(200).json(itemsWithBase64Images);
   }
 
   @Get('/:storeId/wallet-addresses')

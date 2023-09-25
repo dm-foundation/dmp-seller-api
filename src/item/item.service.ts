@@ -11,10 +11,8 @@ export class ItemService {
     private itemRepository: Repository<Item>,
   ) {}
   async create(createItemDto: CreateItemDto) {
-    console.log("🚀 ~ file: item.service.ts:14 ~ ItemService ~ create ~ createItemDto:", createItemDto)
     Number(createItemDto.storeId)
     const createdItem = await this.itemRepository.save(createItemDto)
-    console.log("🚀 ~ file: item.service.ts:16 ~ ItemService ~ create ~ createdItem:", createdItem)
     return createdItem;
   }
 
