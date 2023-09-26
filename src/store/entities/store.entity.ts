@@ -1,5 +1,6 @@
 import { Item } from 'src/item/entities/item.entity';
-import { Sale } from 'src/sale/entities/sale.entity';
+import { Order } from 'src/order/entities/order.entity';
+import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
 import { WalletAddress } from 'src/wallet-address/entities/wallet-address.entity';
 import {
   Column,
@@ -30,8 +31,11 @@ export class Store {
   @OneToMany(() => WalletAddress, (walletAddress) => walletAddress.store)
   walletAddresses: WalletAddress[];
 
-  @OneToMany(() => Sale, (sale) => sale.store)
-  sales: Sale[];
+  @OneToMany(() => Order, (order) => order.store)
+  orders: Order[];
+
+  @OneToMany(() => StoreOrdersItems, (storeOrdersItems) => storeOrdersItems.store)
+  storeOrdersItems: StoreOrdersItems[];
 
   @CreateDateColumn()
   create_at: Date;

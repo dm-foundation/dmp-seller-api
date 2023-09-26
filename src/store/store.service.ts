@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Store } from './entities/store.entity';
 import { Item } from 'src/item/entities/item.entity';
 import { WalletAddress } from 'src/wallet-address/entities/wallet-address.entity';
+import { Order } from 'src/order/entities/order.entity';
+import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
 
 @Injectable()
 export class StoreService {
@@ -17,7 +19,14 @@ export class StoreService {
 
     @Inject('WALLET_ADDRESS_REPOSITORY')
     private walletAddressRepository: Repository<WalletAddress>,
-  ) { }
+
+    @Inject('ORDER_REPOSITORY')
+    private orderRepository: Repository<Order>,
+
+    @Inject('STORE_ORDERS_ITEMS_REPOSITORY')
+    private storeOrdersItemsRepository: Repository<StoreOrdersItems>,
+
+  ) {}
 
   create(createStoreDto: CreateStoreDto): Promise<Store> {
     const createdStore = this.storeRepository.save(createStoreDto);
@@ -28,22 +37,67 @@ export class StoreService {
     return this.storeRepository.find({ where: { active: true } });
   }
 
-  findAllItemsFromStore(storeId: number): Promise<Item[]> {
-    return this.itemRepository.find({
+  async findAllItemsFromStore(storeId: number): Promise<Item[]> {
+    return await this.itemRepository.find({
       relations: { store: true },
       where: {
-        store: { id: storeId }
-      }
+        store: { id: storeId },
+      },
     });
   }
 
-  findAllWalletAdressesFromStore(storeId: number): Promise<WalletAddress[]> {
-    return this.walletAddressRepository.find({
+  async findAllWalletAdressesFromStore(
+    storeId: number,
+  ): Promise<WalletAddress[]> {
+    return await this.walletAddressRepository.find({
       relations: { store: true },
       where: {
-        store: { id: storeId }
-      }
+        store: { id: storeId },
+      },
     });
+  }
+
+  async findOrdersFromStore(storeId: number) {
+    const storeOrdersItems = await this.storeOrdersItemsRepository.find({
+      where: { storeId },
+    });
+
+    const orderIds = storeOrdersItems.map((item) => item.orderId);
+    const orders = await this.orderRepository.find({
+      where: { id: In(orderIds) },
+    });
+
+    const ordersWithItems = [];
+
+    for (const order of orders) {
+      const orderItems = storeOrdersItems.filter(
+        (item) => item.orderId === order.id,
+      );
+
+      const itemIds = orderItems.map((item) => item.itemId);
+
+      const items = await this.itemRepository.find({
+        where: { id: In(itemIds) },
+      });
+
+      const orderObj = {
+        customer_email: order.customer_email,
+        amountInUSD: order.amountInUSD,
+        amountInEth: order.amountInEth,
+        amountInWei: order.amountInWei,
+        contractPaymentAddress: order.contractPaymentAddress,
+        hashedCart: order.hashedCart,
+        id: order.id,
+        status: order.status,
+        created_at: order.created_at,
+        updated_at: order.updated_at,
+        items: items,
+      };
+
+      ordersWithItems.push(orderObj);
+    }
+
+    return ordersWithItems;
   }
 
   findOne(id: number) {
@@ -61,7 +115,7 @@ export class StoreService {
       await this.storeRepository.update(id, { active: false });
       return `Store #${id} deactivated successfully`;
     }
-    await this.storeRepository.update(id, { active: true })
+    await this.storeRepository.update(id, { active: true });
     return `Store #${id} activated successfully`;
   }
 }

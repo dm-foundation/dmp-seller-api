@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Item } from './entities/item.entity';
 
 @Injectable()
@@ -18,6 +18,10 @@ export class ItemService {
 
   findOne(id: number) {
     return this.itemRepository.findOne({ where: { id } });
+  }
+
+  findByIds(ids: number[]) {
+    return this.itemRepository.find({ where: { id: In(ids) } });
   }
 
   update(id: number, updateItemDto: UpdateItemDto) {

@@ -1,12 +1,13 @@
 import { Item } from 'src/item/entities/item.entity';
+import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
 import { Store } from 'src/store/entities/store.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,7 +19,8 @@ export enum Status {
   INVOICE_SENT = 'invoice_sent',
 }
 
-export class Sale {
+@Entity('orders')
+export class Order {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -32,11 +34,17 @@ export class Sale {
   })
   status: Status;
 
-  // @ManyToOne(() => Store, (store) => store.sales)
-  // store: Store;
+  @ManyToOne(() => Store, (store) => store.orders)
+  store: Store;
 
-  // @OneToMany(() => Item, (item) => item.id)
-  // items: Item[];
+  @OneToMany(() => Item, (item) => item.id)
+  items: Item[];
+
+  @OneToOne(
+    () => StoreOrdersItems,
+    (storeOrdersItems) => storeOrdersItems.order,
+  )
+  storeOrdersItems: StoreOrdersItems;
 
   @Column()
   amountInUSD: number;
