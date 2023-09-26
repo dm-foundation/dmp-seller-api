@@ -9,7 +9,7 @@ export class ItemService {
   constructor(
     @Inject('ITEM_REPOSITORY')
     private itemRepository: Repository<Item>,
-  ) {}
+  ) { }
   async create(createItemDto: CreateItemDto) {
     Number(createItemDto.storeId)
     const createdItem = await this.itemRepository.save(createItemDto)
@@ -26,7 +26,7 @@ export class ItemService {
   }
 
   remove(id: number) {
-    this.itemRepository.delete({id})
+    this.itemRepository.delete({ id })
     return `Item #${id} deleted successfully`;
   }
 }

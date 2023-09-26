@@ -20,10 +20,10 @@ export enum Status {
 
 @Entity('sales')
 export class Sale {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
-  @Column()
+  @Column({ default: '' })
   customer_email: string;
 
   @Column({
@@ -39,17 +39,20 @@ export class Sale {
   @OneToMany(() => Item, (item) => item.id)
   items: Item[];
 
-  @Column()
+  @Column({ type: 'bigint' })
   amountInUSD: number
 
-  @Column()
+  @Column({ type: 'float' })
   amountInEth: number
 
-  @Column()
+  @Column({ type: 'bigint' })
   amountInWei: number
 
   @Column()
   contractPaymentAddress: string
+
+  @Column()
+  transactionHash: string
 
   @Column()
   hashedCart: string

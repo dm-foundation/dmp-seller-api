@@ -12,7 +12,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const corsOptions = {
-    origin: ['https://d2v76rwlkzvt6c.cloudfront.net:3001/', 'https://45.61.139.236:3001/', 'https://localhost:3001', 'http://192.168.0.7:3001'],
+    origin: ['https://d2v76rwlkzvt6c.cloudfront.net:3001/', 'https://45.61.139.236:3001/', 'http://192.168.0.7:3001/'],
     credentials: true,
     optionSuccessStatus: 200
   }

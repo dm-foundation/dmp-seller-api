@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
+import { Sale } from './entities/sale.entity';
 
 @Injectable()
 export class SaleService {
-  create(createSaleDto: CreateSaleDto) {
-    return 'This action adds a new sale';
+  constructor(
+    @Inject('SALE_REPOSITORY')
+    private saleRepository: Repository<Sale>) { }
+
+  async create(createSaleDto: CreateSaleDto) {
+    const createdSale = await this.saleRepository.save(createSaleDto)
+    return createdSale;
   }
 
   findAll() {
