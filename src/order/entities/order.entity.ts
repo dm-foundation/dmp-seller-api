@@ -1,16 +1,15 @@
-import { Logger } from '@nestjs/common';
 import { Item } from 'src/item/entities/item.entity';
+import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
 import { Store } from 'src/store/entities/store.entity';
 import {
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 
 export enum Status {
@@ -20,12 +19,12 @@ export enum Status {
   INVOICE_SENT = 'invoice_sent',
 }
 
-export class Sale {
-
-  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+@Entity('orders')
+export class Order {
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ default: '' })
+  @Column()
   customer_email: string;
 
   @Column({
@@ -35,29 +34,29 @@ export class Sale {
   })
   status: Status;
 
-  // @ManyToOne(() => Store, (store) => store.sales)
-  // store: Store;
+  @ManyToOne(() => Store, (store) => store.orders)
+  store: Store;
 
-  // @OneToMany(() => Item, (item) => item.id)
-  // items: Item[];
+  @OneToMany(() => Item, (item) => item.id)
+  items: Item[];
 
-  @Column({ type: 'bigint' })
-  amountInUSD: number
-
-  @Column({ type: 'float' })
-  amountInEth: number
-
-  @Column({ type: 'bigint' })
-  amountInWei: number
+  @OneToOne(
+    () => StoreOrdersItems,
+    (storeOrdersItems) => storeOrdersItems.order,
+  )
+  storeOrdersItems: StoreOrdersItems;
 
   @Column()
-  paymentFactoryAddress: string
+  amountInUSD: number;
 
   @Column()
-  paymentAddress: string
+  amountInEth: number;
 
-  @Column({ unique: true, nullable: true })
-  paymentTransactionHash: string
+  @Column()
+  amountInWei: number;
+
+  @Column()
+  contractPaymentAddress: string;
 
   @Column()
   hashedCart: string;
@@ -67,5 +66,4 @@ export class Sale {
 
   @UpdateDateColumn()
   updated_at: Date;
-  static Created: any;
 }

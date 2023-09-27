@@ -43,6 +43,11 @@ export class StoreController {
     return await this.storeService.findAllWalletAdressesFromStore(storeId);
   }
 
+  @Get('/:storeId/store-orders-items')
+  async findOrdersFromStore(@Param('storeId') storeId: number) {
+    return await this.storeService.findOrdersFromStore(storeId);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.storeService.findOne(+id);

@@ -13,17 +13,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from '../config/configuration';
 import { HealthModule as healthModule } from './health/health.module';
 import { Item } from './item/entities/item.entity';
-import { Sale } from './sale/entities/sale.entity';
 import { Store } from './store/entities/store.entity';
 import { WalletAddress } from './wallet-address/entities/wallet-address.entity';
 import { WalletAddressModule } from './wallet-address/wallet-address.module';
 import { SaleSubscriber } from './sale/sale.subscriber';
+import { HealthModule } from './health/health.module';
+import { OrderModule } from './order/order.module';
+import { StoreOrdersItemsModule } from './store-orders-items/store-orders-items.module';
+import { StoreOrdersItems } from './store-orders-items/entities/store-orders-items.entity';
+import { Order } from './order/entities/order.entity';
 
 let modelModules = [
   StoreModule,
   ItemModule,
-  SaleModule,
-  WalletAddressModule
+  WalletAddressModule,
+  OrderModule,
+  StoreOrdersItemsModule
 ];
 
 let configModuleConfig = ConfigModule.forRoot({
@@ -38,8 +43,8 @@ let typeOrmConfig = TypeOrmModule.forRoot({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DB,
-  entities: [Item, Sale, Store, WalletAddress],
   subscribers: [SaleSubscriber],
+  entities: [Item, Store, WalletAddress, Order, StoreOrdersItems],
   synchronize: true,
   autoLoadEntities: true,
   logger: 'advanced-console',

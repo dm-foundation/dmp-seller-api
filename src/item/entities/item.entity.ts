@@ -1,9 +1,11 @@
+import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
 import { Store } from 'src/store/entities/store.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -35,6 +37,9 @@ export class Item {
   @ManyToOne(() => Store, (store) => store.items)
   @JoinColumn({name: 'storeId'})
   store: Store;
+
+  @ManyToMany(() => StoreOrdersItems)
+  storeOrdersItems: StoreOrdersItems[];
 
   @CreateDateColumn()
   created_at: Date;
