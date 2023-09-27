@@ -24,7 +24,7 @@ import { Response } from 'express';
 
 @Controller('item')
 export class ItemController {
-  constructor(private readonly itemService: ItemService) {}
+  constructor(private readonly itemService: ItemService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('thumbnail', multerConfig))
@@ -37,9 +37,7 @@ export class ItemController {
         'Thumbnail must be provided or file extension is invalid.',
       );
     }
-
     createItemDto.thumbnail = thumbnail.path.toString();
-
     return await this.itemService.create(createItemDto);
   }
 
@@ -61,20 +59,12 @@ export class ItemController {
     return res.status(200).json(itemWithBase64Image);
   }
 
-  @Patch(':id')
-  @UseInterceptors(FileInterceptor('thumbnail', multerConfig))
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateItemDto: UpdateItemDto,
-    @UploadedFile() thumbnail: Express.Multer.File,
   ) {
-    if (!thumbnail) {
-      throw new BadRequestException(
-        'Thumbnail must be provided or file extension is invalid.',
-      );
-    }
-    updateItemDto.thumbnail = thumbnail.path.toString();
-
+    console.log(updateItemDto);
     return this.itemService.update(+id, updateItemDto);
   }
 
