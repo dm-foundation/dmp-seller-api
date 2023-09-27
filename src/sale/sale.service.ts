@@ -11,7 +11,7 @@ export class SaleService {
     private saleRepository: Repository<Sale>) { }
 
   async create(createSaleDto: CreateSaleDto) {
-    const createdSale = await this.saleRepository.save(createSaleDto)
+    const createdSale = await this.saleRepository.save(createSaleDto);
     return createdSale;
   }
 

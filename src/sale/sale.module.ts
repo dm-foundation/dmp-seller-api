@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SaleService } from './sale.service';
-import { SaleController } from './sale.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { saleProviders } from 'src/providers/sale.providers';
+import { SaleController } from './sale.controller';
+import { SaleService } from './sale.service';
 
 @Module({
   imports: [DatabaseModule],

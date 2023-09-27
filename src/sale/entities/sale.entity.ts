@@ -1,14 +1,16 @@
+import { Logger } from '@nestjs/common';
 import { Item } from 'src/item/entities/item.entity';
 import { Store } from 'src/store/entities/store.entity';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 export enum Status {
@@ -20,6 +22,7 @@ export enum Status {
 
 @Entity('sales')
 export class Sale {
+
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
@@ -49,10 +52,13 @@ export class Sale {
   amountInWei: number
 
   @Column()
-  contractPaymentAddress: string
+  paymentFactoryAddress: string
 
   @Column()
-  transactionHash: string
+  paymentAddress: string
+
+  @Column({ unique: true, nullable: true })
+  paymentTransactionHash: string
 
   @Column()
   hashedCart: string
@@ -62,4 +68,5 @@ export class Sale {
 
   @UpdateDateColumn()
   updated_at: Date;
+  static Created: any;
 }

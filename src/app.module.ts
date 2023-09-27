@@ -4,19 +4,20 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { StoreModule } from './store/store.module';
 import { ItemModule } from './item/item.module';
 import { SaleModule } from './sale/sale.module';
+import { StoreModule } from './store/store.module';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import configuration from '../config/configuration';
+import { HealthModule as healthModule } from './health/health.module';
 import { Item } from './item/entities/item.entity';
 import { Sale } from './sale/entities/sale.entity';
 import { Store } from './store/entities/store.entity';
 import { WalletAddress } from './wallet-address/entities/wallet-address.entity';
 import { WalletAddressModule } from './wallet-address/wallet-address.module';
-import { HealthModule } from './health/health.module';
+import { SaleSubscriber } from './sale/sale.subscriber';
 
 let modelModules = [
   StoreModule,
@@ -38,8 +39,11 @@ let typeOrmConfig = TypeOrmModule.forRoot({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DB,
   entities: [Item, Sale, Store, WalletAddress],
+  subscribers: [SaleSubscriber],
   synchronize: true,
   autoLoadEntities: true,
+  logger: 'advanced-console',
+  logging: 'all'
 })
 
 @Module({
@@ -47,7 +51,7 @@ let typeOrmConfig = TypeOrmModule.forRoot({
     [
       typeOrmConfig,
       configModuleConfig,
-      HealthModule,
+      healthModule,
       ...modelModules,
     ],
   controllers: [AppController],
