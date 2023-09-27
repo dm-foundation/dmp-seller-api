@@ -22,8 +22,9 @@ import { OrderModule } from './order/order.module';
 import { StoreOrdersItemsModule } from './store-orders-items/store-orders-items.module';
 import { StoreOrdersItems } from './store-orders-items/entities/store-orders-items.entity';
 import { Order } from './order/entities/order.entity';
+import { ThrottlerModule } from '@nestjs/throttler';
 
-let modelModules = [
+const modelModules = [
   StoreModule,
   ItemModule,
   WalletAddressModule,
@@ -31,12 +32,18 @@ let modelModules = [
   StoreOrdersItemsModule
 ];
 
-let configModuleConfig = ConfigModule.forRoot({
+const configModuleConfig = ConfigModule.forRoot({
   load: [configuration],
   envFilePath: `.env.${process.env.NODE_ENV}`,
 })
 
-let typeOrmConfig = TypeOrmModule.forRoot({
+
+const throttlerModuleConfig = ThrottlerModule.forRoot([{
+  ttl: 60000,
+  limit: 10,
+}])
+
+const typeOrmConfig = TypeOrmModule.forRoot({
   type: 'mysql',
   host: process.env.DATABASE_HOST,
   port: 3306,
@@ -56,6 +63,7 @@ let typeOrmConfig = TypeOrmModule.forRoot({
     [
       typeOrmConfig,
       configModuleConfig,
+      throttlerModuleConfig,
       healthModule,
       ...modelModules,
     ],

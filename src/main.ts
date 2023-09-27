@@ -1,8 +1,9 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Logger, Injectable } from '@nestjs/common';
 
-import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import helmet from 'helmet';
+import { AppModule } from './app.module';
 
 let cors = require("cors");
 
@@ -10,6 +11,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
+  app.use(helmet());
 
   const corsOptions = {
     origin: ['https://d2v76rwlkzvt6c.cloudfront.net:3001/', 'https://45.61.139.236:3001/', 'http://192.168.0.7:3001/', 'http://localhost:3001'],
