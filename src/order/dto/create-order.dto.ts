@@ -7,6 +7,8 @@ export class CreateOrderDto {
     amountInEth: number;
     amountInWei: number;
     items: number[];
-    contractPaymentAddress: string;
+    paymentFactoryAddress: string;
+    paymentAddress: string;
+    paymentTransactionHash: string
     hashedCart: string;
 }

@@ -26,7 +26,7 @@ export class StoreService {
     @Inject('STORE_ORDERS_ITEMS_REPOSITORY')
     private storeOrdersItemsRepository: Repository<StoreOrdersItems>,
 
-  ) {}
+  ) { }
 
   create(createStoreDto: CreateStoreDto): Promise<Store> {
     const createdStore = this.storeRepository.save(createStoreDto);
@@ -85,7 +85,7 @@ export class StoreService {
         amountInUSD: order.amountInUSD,
         amountInEth: order.amountInEth,
         amountInWei: order.amountInWei,
-        contractPaymentAddress: order.contractPaymentAddress,
+        paymentAddress: order.paymentAddress,
         hashedCart: order.hashedCart,
         id: order.id,
         status: order.status,

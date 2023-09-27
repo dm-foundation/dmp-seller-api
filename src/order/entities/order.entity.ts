@@ -24,7 +24,7 @@ export class Order {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   customer_email: string;
 
   @Column({
@@ -46,17 +46,23 @@ export class Order {
   )
   storeOrdersItems: StoreOrdersItems;
 
-  @Column()
-  amountInUSD: number;
+  @Column({ type: 'bigint' })
+  amountInUSD: number
+
+  @Column({ type: 'float' })
+  amountInEth: number
+
+  @Column({ type: 'bigint' })
+  amountInWei: number
 
   @Column()
-  amountInEth: number;
+  paymentFactoryAddress: string
 
   @Column()
-  amountInWei: number;
+  paymentAddress: string
 
-  @Column()
-  contractPaymentAddress: string;
+  @Column({ unique: true, nullable: true })
+  paymentTransactionHash: string
 
   @Column()
   hashedCart: string;
