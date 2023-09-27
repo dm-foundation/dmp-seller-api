@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
@@ -23,6 +23,7 @@ import { StoreOrdersItemsModule } from './store-orders-items/store-orders-items.
 import { StoreOrdersItems } from './store-orders-items/entities/store-orders-items.entity';
 import { Order } from './order/entities/order.entity';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { LoggerMiddleware } from './middleware/logger.middleware';
 
 const modelModules = [
   StoreModule,
@@ -71,4 +72,8 @@ const typeOrmConfig = TypeOrmModule.forRoot({
   providers: [AppService],
 })
 
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
