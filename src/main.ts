@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(helmet());
 
   const corsOptions = {
-    origin: ['https://d2v76rwlkzvt6c.cloudfront.net:3001/', 'https://45.61.139.236:3001/', 'http://192.168.0.7:3001/', 'http://localhost:3001'],
+    origin: '*',
     credentials: true,
     optionSuccessStatus: 200,
     allowedHeaders: ['Access-Control-Allow-Origin', 'Content-Type', 'Authorization'],
