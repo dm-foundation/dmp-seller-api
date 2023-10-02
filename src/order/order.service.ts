@@ -15,36 +15,40 @@ export class OrderService {
     private storeOrdersItemsRepository: Repository<StoreOrdersItems>,
     @Inject('ITEM_REPOSITORY')
     private itemsRepository: Repository<Item>,
-  ) {}
+  ) { }
   async create(createOrderDto: CreateOrderDto) {
     const { items, ...orderData } = createOrderDto;
 
-    const order = this.orderRepository.create(orderData);
-    const createdOrder = await this.orderRepository.save(order);
+    try {
+      const order = this.orderRepository.create(orderData);
+      const createdOrder = await this.orderRepository.save(order);
+      const createdOrderObj = {
+        ...createdOrder,
+        orderItems: [],
+      };
 
-    const createdOrderObj = {
-      ...createdOrder,
-      orderItems: [],
-    };
+      for (const itemId of items) {
+        const item = await this.itemsRepository.findOne({
+          where: { id: itemId },
+        });
 
-    for (const itemId of items) {
-      const item = await this.itemsRepository.findOne({
-        where: { id: itemId },
-      });
+        createdOrderObj.orderItems.push(item);
 
-      createdOrderObj.orderItems.push(item);
-
-      if (item) {
-        const storeOrderItemObj: CreateStoreOrdersItemDto = {
-          orderId: createdOrder.id,
-          itemId: item.id,
-          storeId: item.storeId,
-        };
-        await this.storeOrdersItemsRepository.save(storeOrderItemObj);
+        if (item) {
+          const storeOrderItemObj: CreateStoreOrdersItemDto = {
+            orderId: createdOrder.id,
+            itemId: item.id,
+            storeId: item.storeId,
+          };
+          await this.storeOrdersItemsRepository.save(storeOrderItemObj);
+        }
       }
+      return createdOrderObj;
     }
-
-    return createdOrderObj;
+    catch (err) {
+      console.log(err);
+      return null;
+    }
   }
 
   async findAll() {
