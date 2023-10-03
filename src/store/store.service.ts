@@ -98,26 +98,28 @@ export class StoreService {
         }
       }
 
-      const orderObj = {
-        customer_email: order.customer_email,
-        amountInUSD: order.amountInUSD,
-        amountInUSDC: order.amountInUSDC,
-        amountInEth: order.amountInEth,
-        amountInWei: order.amountInWei,
-        paymentAddress: order.paymentAddress,
-        paymentReceipt: order.paymentReceipt,
-        paymentCurrency: order.paymentCurrency,
-        paymentTransactionHash: order.paymentTransactionHash,
-        paymentProof: order.paymentProof,
-        paymentFactoryAddress: order.paymentFactoryAddress,
-        id: order.id,
-        status: order.status,
-        created_at: order.created_at,
-        updated_at: order.updated_at,
-        items: itemsWithQuantityAndUnitPrice,
-      };
+      if (order.status === 'complete') {
+        const orderObj = {
+          customer_email: order.customer_email,
+          amountInUSD: order.amountInUSD,
+          amountInUSDC: order.amountInUSDC,
+          amountInEth: order.amountInEth,
+          amountInWei: order.amountInWei,
+          paymentAddress: order.paymentAddress,
+          paymentReceipt: order.paymentReceipt,
+          paymentCurrency: order.paymentCurrency,
+          paymentTransactionHash: order.paymentTransactionHash,
+          paymentProof: order.paymentProof,
+          paymentFactoryAddress: order.paymentFactoryAddress,
+          id: order.id,
+          status: order.status,
+          created_at: order.created_at,
+          updated_at: order.updated_at,
+          items: itemsWithQuantityAndUnitPrice,
+        };
 
-      ordersWithItems.push(orderObj);
+        ordersWithItems.push(orderObj);
+      }
     }
 
     return ordersWithItems;
