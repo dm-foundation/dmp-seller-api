@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -39,7 +40,11 @@ export class Order {
   })
   status: Status;
 
+  @Column({nullable: false})
+  storeId: number;
+
   @ManyToOne(() => Store, (store) => store.orders)
+  @JoinColumn({ name: 'storeId' })
   store: Store;
 
   @OneToMany(() => Item, (item) => item.id)

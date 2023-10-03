@@ -61,28 +61,28 @@ export class StoreService {
     const storeOrdersItems = await this.storeOrdersItemsRepository.find({
       where: { storeId },
     });
-  
+
     const orderIds = storeOrdersItems.map((item) => item.orderId);
-  
+
     const orders = await this.orderRepository.find({
       where: { id: In(orderIds) },
     });
-  
+
     const ordersWithItems = [];
-  
+
     for (const order of orders) {
       const orderItems = storeOrdersItems.filter(
         (item) => item.orderId === order.id,
       );
-  
+
       const itemIds = orderItems.map((item) => item.itemId);
-  
+
       const items = await this.itemRepository.find({
         where: { id: In(itemIds) },
       });
-  
+
       const itemsWithQuantityAndUnitPrice = [];
-  
+
       for (const orderItem of orderItems) {
         const item = items.find((item) => item.id === orderItem.itemId);
         if (item) {
@@ -97,7 +97,7 @@ export class StoreService {
           itemsWithQuantityAndUnitPrice.push(itemObj);
         }
       }
-  
+
       const orderObj = {
         customer_email: order.customer_email,
         amountInUSD: order.amountInUSD,
@@ -108,16 +108,18 @@ export class StoreService {
         paymentReceipt: order.paymentReceipt,
         paymentCurrency: order.paymentCurrency,
         paymentTransactionHash: order.paymentTransactionHash,
+        paymentProof: order.paymentProof,
+        paymentFactoryAddress: order.paymentFactoryAddress,
         id: order.id,
         status: order.status,
         created_at: order.created_at,
         updated_at: order.updated_at,
         items: itemsWithQuantityAndUnitPrice,
       };
-  
+
       ordersWithItems.push(orderObj);
     }
-  
+
     return ordersWithItems;
   }
 

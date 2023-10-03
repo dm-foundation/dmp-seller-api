@@ -8,7 +8,6 @@ import {
   JoinColumn,
   ManyToMany,
   Entity,
-  JoinTable,
 } from 'typeorm';
 
 @Entity('store_orders_items')
@@ -27,7 +26,7 @@ export class StoreOrdersItems {
   itemId: number;
 
   @ManyToMany(() => Item)
-  @JoinTable({ name: 'Item' })
+  @JoinColumn({ name: 'itemId' })
   items: Item[];
 
   @Column()

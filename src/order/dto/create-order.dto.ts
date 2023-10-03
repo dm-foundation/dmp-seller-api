@@ -6,7 +6,6 @@ export class CreateOrderDto {
   amountInWei: number;
   amountInUSDC: number;
   items: itemHandle[];
-  contractPaymentAddress: string;
   paymentProof: string;
   paymentFactoryAddress: string;
   paymentAddress: string;

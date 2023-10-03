@@ -20,8 +20,7 @@ export class OrderService {
     const { items, ...orderData } = createOrderDto;
 
     try {
-      const order = this.orderRepository.create(orderData);
-      const createdOrder = await this.orderRepository.save(order);
+      const createdOrder = await this.orderRepository.save(orderData);
 
       const createdOrderObj = {
         ...createdOrder,
