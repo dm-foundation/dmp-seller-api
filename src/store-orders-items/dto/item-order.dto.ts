@@ -1,4 +1,4 @@
-export class handleItemOrder {
+export class ItemOrderDTO {
   name: string;
   sku: string;
   unitPrice: number;

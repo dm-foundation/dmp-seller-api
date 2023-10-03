@@ -5,7 +5,7 @@ export class CreateOrderDto {
   amountInEth: number;
   amountInWei: number;
   amountInUSDC: number;
-  items: itemHandle[];
+  items: OrderItem[];
   paymentProof: string;
   paymentFactoryAddress: string;
   paymentAddress: string;
@@ -13,7 +13,7 @@ export class CreateOrderDto {
   paymentReceipt: string;
 }
 
-class itemHandle {
+class OrderItem {
   itemId: number;
   quantity: number;
   unitPrice: number;

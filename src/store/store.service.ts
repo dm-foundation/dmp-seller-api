@@ -7,7 +7,6 @@ import { Item } from 'src/item/entities/item.entity';
 import { WalletAddress } from 'src/wallet-address/entities/wallet-address.entity';
 import { Order } from 'src/order/entities/order.entity';
 import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
-import { handleItemOrder } from 'src/store-orders-items/dto/handle-item-order';
 
 @Injectable()
 export class StoreService {

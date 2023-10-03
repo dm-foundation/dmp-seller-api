@@ -40,7 +40,7 @@ export class Order {
   })
   status: Status;
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   storeId: number;
 
   @ManyToOne(() => Store, (store) => store.orders)
@@ -71,16 +71,16 @@ export class Order {
   @Column()
   paymentFactoryAddress: string
 
-  @Column({ unique: true })
+  @Column()
   paymentAddress: string
 
   @Column()
   paymentProof: string
 
-  @Column({ unique: true, nullable: true })
+  @Column({ nullable: true })
   paymentTransactionHash: string
 
-  @Column({ unique: true })
+  @Column()
   paymentReceipt: string;
 
   @Column({

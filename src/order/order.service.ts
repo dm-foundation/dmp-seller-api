@@ -15,7 +15,7 @@ export class OrderService {
     private storeOrdersItemsRepository: Repository<StoreOrdersItems>,
     @Inject('ITEM_REPOSITORY')
     private itemsRepository: Repository<Item>,
-  ) {}
+  ) { }
   async create(createOrderDto: CreateOrderDto) {
     const { items, ...orderData } = createOrderDto;
 
@@ -28,19 +28,16 @@ export class OrderService {
       };
 
       for (const itemData of items) {
-        const { itemId, quantity, unitPrice } = itemData;
-
-        const item = await this.itemsRepository.findOne({
-          where: { id: itemId },
+        const storeItem = await this.itemsRepository.findOne({
+          where: { id: itemData.itemId },
         });
-
-        if (item) {
+        if (storeItem) {
           const storeOrderItemObj: CreateStoreOrdersItemDto = {
-            storeId: item.storeId,
-            itemId: item.id,
+            storeId: storeItem.storeId,
+            itemId: itemData.itemId,
             orderId: createdOrder.id,
-            quantity,
-            unitPrice,
+            quantity: itemData.quantity,
+            unitPrice: itemData.unitPrice,
           };
 
           const createdStoreOrderItem =
@@ -68,7 +65,7 @@ export class OrderService {
   }
 
   async updateOrderStatus(id: number, newStatus: Status) {
-    const order = await this.orderRepository.findOne({where: {id}});
+    const order = await this.orderRepository.findOne({ where: { id } });
 
     if (!order) {
       throw new NotFoundException(`Order with ID ${id} not found`);
