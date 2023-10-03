@@ -7,6 +7,7 @@ import { Item } from 'src/item/entities/item.entity';
 import { WalletAddress } from 'src/wallet-address/entities/wallet-address.entity';
 import { Order } from 'src/order/entities/order.entity';
 import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
+import { handleItemOrder } from 'src/store-orders-items/dto/handle-item-order';
 
 @Injectable()
 export class StoreService {
@@ -25,8 +26,7 @@ export class StoreService {
 
     @Inject('STORE_ORDERS_ITEMS_REPOSITORY')
     private storeOrdersItemsRepository: Repository<StoreOrdersItems>,
-
-  ) { }
+  ) {}
 
   create(createStoreDto: CreateStoreDto): Promise<Store> {
     const createdStore = this.storeRepository.save(createStoreDto);
@@ -61,25 +61,43 @@ export class StoreService {
     const storeOrdersItems = await this.storeOrdersItemsRepository.find({
       where: { storeId },
     });
-
+  
     const orderIds = storeOrdersItems.map((item) => item.orderId);
+  
     const orders = await this.orderRepository.find({
       where: { id: In(orderIds) },
     });
-
+  
     const ordersWithItems = [];
-
+  
     for (const order of orders) {
       const orderItems = storeOrdersItems.filter(
         (item) => item.orderId === order.id,
       );
-
+  
       const itemIds = orderItems.map((item) => item.itemId);
-
+  
       const items = await this.itemRepository.find({
         where: { id: In(itemIds) },
       });
-
+  
+      const itemsWithQuantityAndUnitPrice = [];
+  
+      for (const orderItem of orderItems) {
+        const item = items.find((item) => item.id === orderItem.itemId);
+        if (item) {
+          const itemObj = {
+            name: item.name,
+            sku: item.sku,
+            unitPrice: orderItem.unitPrice,
+            quantity: orderItem.quantity,
+            thumbnail: item.thumbnail,
+            storeId: item.storeId,
+          };
+          itemsWithQuantityAndUnitPrice.push(itemObj);
+        }
+      }
+  
       const orderObj = {
         customer_email: order.customer_email,
         amountInUSD: order.amountInUSD,
@@ -91,12 +109,12 @@ export class StoreService {
         status: order.status,
         created_at: order.created_at,
         updated_at: order.updated_at,
-        items: items,
+        items: itemsWithQuantityAndUnitPrice,
       };
-
+  
       ordersWithItems.push(orderObj);
     }
-
+  
     return ordersWithItems;
   }
 

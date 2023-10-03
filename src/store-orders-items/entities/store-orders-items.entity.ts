@@ -36,4 +36,10 @@ export class StoreOrdersItems {
   @ManyToOne(() => Order, (order) => order.storeOrdersItems)
   @JoinColumn({ name: 'orderId' })
   order: Order;
+
+  @Column()
+  quantity: number;
+
+  @Column({ type: 'decimal' })
+  unitPrice: number;
 }

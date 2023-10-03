@@ -27,20 +27,25 @@ export class OrderService {
       orderItems: [],
     };
 
-    for (const itemId of items) {
-      const item = await this.itemsRepository.findOne({
-        where: { id: itemId },
-      });
+    for (const itemData of items) {
+      const { itemId, quantity, unitPrice } = itemData;
 
-      createdOrderObj.orderItems.push(item);
+      const item = await this.itemsRepository.findOne({where : {id: itemId}});
 
       if (item) {
         const storeOrderItemObj: CreateStoreOrdersItemDto = {
-          orderId: createdOrder.id,
-          itemId: item.id,
           storeId: item.storeId,
+          itemId: item.id,
+          orderId: createdOrder.id,
+          quantity,
+          unitPrice,
         };
-        await this.storeOrdersItemsRepository.save(storeOrderItemObj);
+
+        const createdStoreOrderItem = await this.storeOrdersItemsRepository.save(
+          storeOrderItemObj,
+        );
+
+        createdOrderObj.orderItems.push(createdStoreOrderItem);
       }
     }
 

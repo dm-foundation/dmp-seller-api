@@ -1,4 +1,3 @@
-import { CreateItemDto } from "src/item/dto/create-item.dto";
 
 export class CreateOrderDto {
     customer_email: string;
@@ -6,9 +5,15 @@ export class CreateOrderDto {
     amountInUSD: number;
     amountInEth: number;
     amountInWei: number;
-    items: number[];
+    items: itemHandle[];
     paymentFactoryAddress: string;
     paymentAddress: string;
     paymentTransactionHash: string
     hashedCart: string;
+}
+
+class itemHandle {
+    itemId: number;
+    quantity: number;
+    unitPrice: number;
 }
