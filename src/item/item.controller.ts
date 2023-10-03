@@ -21,10 +21,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from '../../config/multer.config';
 import * as fs from 'fs';
 import { Response } from 'express';
+import { SubtractUnitItemDto } from './dto/subtract-unit-item.dto';
 
 @Controller('item')
 export class ItemController {
-  constructor(private readonly itemService: ItemService) { }
+  constructor(private readonly itemService: ItemService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('thumbnail', multerConfig))
@@ -60,10 +61,7 @@ export class ItemController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateItemDto: UpdateItemDto,
-  ) {
+  async update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
     console.log(updateItemDto);
     return this.itemService.update(+id, updateItemDto);
   }
@@ -71,5 +69,12 @@ export class ItemController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.itemService.remove(+id);
+  }
+  @Patch(':id/subtract-unit-item')
+  async substractUnitItem(
+    @Param('id') id: number, @Body() subtractUnitItemDto: SubtractUnitItemDto,
+  ) {
+    console.log("🚀 ~ file: item.controller.ts:77 ~ ItemController ~ subtractUnitItemDto:", id, subtractUnitItemDto)
+    return await this.itemService.substractUnitItem(id, subtractUnitItemDto.quantity);
   }
 }

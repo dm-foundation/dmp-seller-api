@@ -1,6 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { Status } from './entities/order.entity';
+import { updateOrderStatusDto } from './dto/update-order-status';
 
 @Controller('order')
 export class OrderController {
@@ -19,5 +29,10 @@ export class OrderController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(+id);
+  }
+
+  @Patch(':id/status')
+  updateOrderStatus(@Param('id') id: string, @Body() updateOrderStatusDto: updateOrderStatusDto) {
+    return this.orderService.updateOrderStatus(+id, updateOrderStatusDto.status);
   }
 }

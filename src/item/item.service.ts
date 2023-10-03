@@ -9,10 +9,10 @@ export class ItemService {
   constructor(
     @Inject('ITEM_REPOSITORY')
     private itemRepository: Repository<Item>,
-  ) { }
+  ) {}
   async create(createItemDto: CreateItemDto) {
-    Number(createItemDto.storeId)
-    const createdItem = await this.itemRepository.save(createItemDto)
+    Number(createItemDto.storeId);
+    const createdItem = await this.itemRepository.save(createItemDto);
     return createdItem;
   }
 
@@ -25,13 +25,23 @@ export class ItemService {
   }
 
   update(id: number, updateItemDto: UpdateItemDto) {
-    console.log("updateItemDto", updateItemDto);
+    console.log('updateItemDto', updateItemDto);
     this.itemRepository.update(id, updateItemDto);
     return `Item #${id} updated successfully`;
   }
 
   remove(id: number) {
-    this.itemRepository.delete({ id })
+    this.itemRepository.delete({ id });
     return `Item #${id} deleted successfully`;
+  }
+
+  async substractUnitItem(id: number, quantity: number) {
+    const item = await this.itemRepository.findOne({ where: { id } });
+
+    item.units = item.units - Number(quantity);
+
+    const itemUpdated = await this.itemRepository.save(item);
+
+    return `Stock from item #${item.name} was updated to ${itemUpdated.units} successfully`;
   }
 }
