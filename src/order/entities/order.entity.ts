@@ -19,6 +19,11 @@ export enum Status {
   INVOICE_SENT = 'invoice_sent',
 }
 
+export enum Currency {
+  USDC = 'USDC',
+  ETH = 'ETH',
+}
+
 @Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn('increment')
@@ -49,23 +54,36 @@ export class Order {
   @Column({ type: 'bigint' })
   amountInUSD: number
 
-  @Column({ type: 'float' })
+  @Column({ type: 'float', nullable: true })
   amountInEth: number
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', nullable: true })
   amountInWei: number
+
+  @Column({ type: 'bigint' })
+  amountInUSDC: number
 
   @Column()
   paymentFactoryAddress: string
 
-  @Column()
+  @Column({ unique: true })
   paymentAddress: string
+
+  @Column()
+  paymentProof: string
 
   @Column({ unique: true, nullable: true })
   paymentTransactionHash: string
 
-  @Column()
-  hashedCart: string;
+  @Column({ unique: true })
+  paymentReceipt: string;
+
+  @Column({
+    type: 'enum',
+    enum: Currency,
+    default: Currency.USDC,
+  })
+  paymentCurrency: string
 
   @CreateDateColumn()
   created_at: Date;
