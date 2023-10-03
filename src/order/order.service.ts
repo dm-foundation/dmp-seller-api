@@ -19,37 +19,43 @@ export class OrderService {
   async create(createOrderDto: CreateOrderDto) {
     const { items, ...orderData } = createOrderDto;
 
-    const order = this.orderRepository.create(orderData);
-    const createdOrder = await this.orderRepository.save(order);
+    try {
+      const order = this.orderRepository.create(orderData);
+      const createdOrder = await this.orderRepository.save(order);
 
-    const createdOrderObj = {
-      ...createdOrder,
-      orderItems: [],
-    };
+      const createdOrderObj = {
+        ...createdOrder,
+        orderItems: [],
+      };
 
-    for (const itemData of items) {
-      const { itemId, quantity, unitPrice } = itemData;
+      for (const itemData of items) {
+        const { itemId, quantity, unitPrice } = itemData;
 
-      const item = await this.itemsRepository.findOne({where : {id: itemId}});
+        const item = await this.itemsRepository.findOne({
+          where: { id: itemId },
+        });
 
-      if (item) {
-        const storeOrderItemObj: CreateStoreOrdersItemDto = {
-          storeId: item.storeId,
-          itemId: item.id,
-          orderId: createdOrder.id,
-          quantity,
-          unitPrice,
-        };
+        if (item) {
+          const storeOrderItemObj: CreateStoreOrdersItemDto = {
+            storeId: item.storeId,
+            itemId: item.id,
+            orderId: createdOrder.id,
+            quantity,
+            unitPrice,
+          };
 
-        const createdStoreOrderItem = await this.storeOrdersItemsRepository.save(
-          storeOrderItemObj,
-        );
+          const createdStoreOrderItem =
+            await this.storeOrdersItemsRepository.save(storeOrderItemObj);
 
-        createdOrderObj.orderItems.push(createdStoreOrderItem);
+          createdOrderObj.orderItems.push(createdStoreOrderItem);
+        }
       }
-    }
 
-    return createdOrderObj;
+      return createdOrderObj;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 
   async findAll() {
