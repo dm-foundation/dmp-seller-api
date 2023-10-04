@@ -10,14 +10,14 @@ import {
 } from 'typeorm';
 @Entity('walletAddresses')
 export class WalletAddress {
-  @PrimaryColumn({ unique: true })
+  @PrimaryColumn()
   ethAddress: string;
-  
-  @Column()
+
+  @Column({ primary: true })
   storeId: number;
 
   @ManyToOne(() => Store, (store) => store.walletAddresses)
-  @JoinColumn({ name: 'storeId'})
+  @JoinColumn({ name: 'storeId' })
   store: Store;
 
   @CreateDateColumn()
