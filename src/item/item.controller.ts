@@ -62,7 +62,6 @@ export class ItemController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
-    console.log(updateItemDto);
     return this.itemService.update(+id, updateItemDto);
   }
 
@@ -74,7 +73,6 @@ export class ItemController {
   async substractUnitItem(
     @Param('id') id: number, @Body() subtractUnitItemDto: SubtractUnitItemDto,
   ) {
-    console.log("🚀 ~ file: item.controller.ts:77 ~ ItemController ~ subtractUnitItemDto:", id, subtractUnitItemDto)
     return await this.itemService.substractUnitItem(id, subtractUnitItemDto.quantity);
   }
 }

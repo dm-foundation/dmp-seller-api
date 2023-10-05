@@ -25,7 +25,6 @@ export class ItemService {
   }
 
   update(id: number, updateItemDto: UpdateItemDto) {
-    console.log('updateItemDto', updateItemDto);
     this.itemRepository.update(id, updateItemDto);
     return `Item #${id} updated successfully`;
   }
