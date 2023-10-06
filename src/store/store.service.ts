@@ -123,8 +123,8 @@ export class StoreService {
     return ordersWithItems;
   }
 
-  findOne(id: number) {
-    return this.storeRepository.findOne({ where: { id, active: true } });
+  async findOne(id: number) {
+    return await this.storeRepository.findOne({ where: { id, active: true } });
   }
 
   update(id: number, updateStoreDto: UpdateStoreDto) {

@@ -35,4 +35,9 @@ export class OrderController {
   updateOrderStatus(@Param('id') id: string, @Body() updateOrderStatusDto: updateOrderStatusDto) {
     return this.orderService.updateOrderStatus(+id, updateOrderStatusDto.status);
   }
+
+  @Get(':id/send-email')
+  async sendReceiptByEmail(@Param('id') id: string) {
+    return this.orderService.sendReceiptByEmail(+id);
+  }
 }
