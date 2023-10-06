@@ -25,7 +25,7 @@ import { SubtractUnitItemDto } from './dto/subtract-unit-item.dto';
 
 @Controller('item')
 export class ItemController {
-  constructor(private readonly itemService: ItemService) {}
+  constructor(private readonly itemService: ItemService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('thumbnail', multerConfig))

@@ -5,6 +5,7 @@ import { Order, Status } from './entities/order.entity';
 import { StoreOrdersItems } from 'src/store-orders-items/entities/store-orders-items.entity';
 import { Item } from 'src/item/entities/item.entity';
 import { CreateStoreOrdersItemDto } from 'src/store-orders-items/dto/create-store-orders-item.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -64,16 +65,17 @@ export class OrderService {
     });
   }
 
-  async updateOrderStatus(id: number, newStatus: Status) {
+  async updateOrderStatus(id: number, newOrder: UpdateOrderDto) {
     const order = await this.orderRepository.findOne({ where: { id } });
 
     if (!order) {
       throw new NotFoundException(`Order with ID ${id} not found`);
     }
 
-    order.status = newStatus;
+    order.status = newOrder.status;
+    order.paymentTransactionHash = newOrder.paymentTransactionHash
     await this.orderRepository.update(id, order);
 
-    return `Order status updated to "${newStatus}" successfully`;
+    return `Order status updated to "${newOrder}" successfully`;
   }
 }
