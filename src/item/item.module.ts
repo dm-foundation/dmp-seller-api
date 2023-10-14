@@ -11,4 +11,4 @@ import { multerConfig } from '../../config/multer.config';
   controllers: [ItemController],
   providers: [...itemProviders, ItemService],
 })
-export class ItemModule {}
+export class ItemModule { }

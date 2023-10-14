@@ -5,25 +5,24 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { ItemModule } from './item/item.module';
-import { SaleModule } from './sale/sale.module';
 import { StoreModule } from './store/store.module';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { ThrottlerModule } from '@nestjs/throttler';
 import configuration from '../config/configuration';
-import { HealthModule as healthModule } from './health/health.module';
+import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
 import { Item } from './item/entities/item.entity';
+import { LoggerMiddleware } from './middleware/logger.middleware';
+import { Order } from './order/entities/order.entity';
+import { OrderModule } from './order/order.module';
+import { SaleSubscriber } from './sale/sale.subscriber';
+import { StoreOrdersItems } from './store-orders-items/entities/store-orders-items.entity';
+import { StoreOrdersItemsModule } from './store-orders-items/store-orders-items.module';
 import { Store } from './store/entities/store.entity';
 import { WalletAddress } from './wallet-address/entities/wallet-address.entity';
 import { WalletAddressModule } from './wallet-address/wallet-address.module';
-import { SaleSubscriber } from './sale/sale.subscriber';
-import { HealthModule } from './health/health.module';
-import { OrderModule } from './order/order.module';
-import { StoreOrdersItemsModule } from './store-orders-items/store-orders-items.module';
-import { StoreOrdersItems } from './store-orders-items/entities/store-orders-items.entity';
-import { Order } from './order/entities/order.entity';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { LoggerMiddleware } from './middleware/logger.middleware';
 
 const modelModules = [
   StoreModule,
@@ -51,12 +50,11 @@ const typeOrmConfig = TypeOrmModule.forRoot({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DB,
-  subscribers: [SaleSubscriber],
   entities: [Item, Store, WalletAddress, Order, StoreOrdersItems],
   synchronize: true,
   autoLoadEntities: true,
-  logger: 'advanced-console',
-  logging: 'all'
+  // logger: 'advanced-console',
+  // logging: ''
 })
 
 @Module({
@@ -65,8 +63,9 @@ const typeOrmConfig = TypeOrmModule.forRoot({
       typeOrmConfig,
       configModuleConfig,
       throttlerModuleConfig,
-      healthModule,
+      HealthModule,
       ...modelModules,
+      AuthModule,
     ],
   controllers: [AppController],
   providers: [AppService],
